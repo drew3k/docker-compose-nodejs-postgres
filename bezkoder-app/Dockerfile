@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:18 AS builder
 WORKDIR /bezkoder-app
 
 COPY package*.json ./
@@ -7,12 +7,8 @@ COPY . .
 
 FROM node:18-alpine
 WORKDIR /bezkoder-app
-
-RUN npm prune --omit=dev
-
 COPY --from=builder /bezkoder-app/ ./
-
+RUN npm prune --omit=dev
 USER node
 EXPOSE 8080
-
-CMD ["node", "server.js"]
+ENTRYPOINT ["node", "server.js"]
