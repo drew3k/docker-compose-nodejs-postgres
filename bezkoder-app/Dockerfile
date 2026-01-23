@@ -1,14 +1,11 @@
-FROM node:18 AS builder
+FROM node:20-alpine AS builder
 WORKDIR /bezkoder-app
-
 COPY package*.json ./
-RUN npm install
-COPY . .
-
-FROM node:18-alpine
-WORKDIR /bezkoder-app
-COPY --from=builder /bezkoder-app/ ./
 RUN npm prune --omit=dev
-USER node
+
+FROM node:20-alpine
+WORKDIR /bezkoder-app
+COPY --from=builder /bezkoder-app/node_modules node_modules
+COPY . .
 EXPOSE 8080
 ENTRYPOINT ["node", "server.js"]
