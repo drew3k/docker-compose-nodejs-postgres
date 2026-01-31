@@ -1,2 +1,5 @@
 .env.sample
 .env
+**/.terraform/
+terraform.tfstate.backup
+terraform.tfstate
